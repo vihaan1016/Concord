@@ -6,25 +6,15 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets'
 import { createConfig, http, fallback } from 'wagmi'
-import { arbitrumSepolia } from 'wagmi/chains'
+import { sepolia } from 'wagmi/chains'
 
-// Arbitrum Sepolia base fees fluctuate rapidly; the default 1.2x multiplier
-// often produces a maxFeePerGas slightly below baseFee. Use 1.5x to be safe.
-const arbitrumSepoliaWithBuffer = {
-  ...arbitrumSepolia,
-  fees: {
-    baseFeeMultiplier: 1.5,
-  },
-} as const satisfies typeof arbitrumSepolia
+// Ethereum Sepolia with the Zama FHEVM coprocessor. Use a dedicated RPC — public
+// nodes rate-limit (429) the relayer decrypt flow and multi-step tx sequences.
+const RPC_PRIMARY = import.meta.env.VITE_RPC_URL || 'https://sepolia.rpc.zama.ai'
 
-// WalletConnect requires a real project ID from https://cloud.walletconnect.com.
-// The previous placeholder ('omnicurve-dev') is rejected with a 403, which broke
-// wallet connection entirely. Only enable WalletConnect when a genuine ID is set;
-// otherwise rely on injected/browser-extension wallets (MetaMask, Brave, Coinbase),
-// which require no project ID and work out of the box.
+// WalletConnect requires a real project id; gate it so wallet connect never 403s.
 const rawProjectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID as string | undefined
-const projectId =
-  rawProjectId && rawProjectId !== 'omnicurve-dev' ? rawProjectId : undefined
+const projectId = rawProjectId && rawProjectId !== 'dev' ? rawProjectId : undefined
 
 const walletGroups = [
   {
@@ -32,38 +22,25 @@ const walletGroups = [
     wallets: [
       injectedWallet,
       coinbaseWallet,
-      // metaMaskWallet and walletConnectWallet both construct a WalletConnect
-      // connector internally, which throws without a valid project ID — so both
-      // are gated. MetaMask still connects via injectedWallet.
+      // Both build a WalletConnect connector internally — gated without a project id.
+      // MetaMask still connects via injectedWallet.
       ...(projectId ? [metaMaskWallet, walletConnectWallet] : []),
     ],
   },
 ]
 
 const connectors = connectorsForWallets(walletGroups, {
-  appName: 'OmniCurve',
-  // connectorsForWallets requires a string; unused when WalletConnect is absent.
+  appName: 'FBA DEX',
   projectId: projectId ?? '',
 })
 
 export const wagmiConfig = createConfig({
   connectors,
-  chains: [arbitrumSepoliaWithBuffer],
+  chains: [sepolia],
   transports: {
-    // The official public RPC rate-limits bursts hard (HTTP 429), which made the
-    // multi-call approve→addLiquidity flow fail at random steps. Batch JSON-RPC
-    // calls, retry on transient errors, and fall back to a second public node.
-    [arbitrumSepolia.id]: fallback([
-      http('https://sepolia-rollup.arbitrum.io/rpc', {
-        batch: true,
-        retryCount: 5,
-        retryDelay: 300,
-      }),
-      http('https://arbitrum-sepolia-rpc.publicnode.com', {
-        batch: true,
-        retryCount: 3,
-        retryDelay: 300,
-      }),
+    [sepolia.id]: fallback([
+      http(RPC_PRIMARY, { batch: true, retryCount: 5, retryDelay: 300 }),
+      http('https://ethereum-sepolia-rpc.publicnode.com', { batch: true, retryCount: 3, retryDelay: 300 }),
     ]),
   },
   ssr: false,

@@ -1,0 +1,933 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_keeper",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_baseToken",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_quoteToken",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_batchDuration",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "MAX_PRICE",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MAX_TICK",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MIN_PRICE",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "MIN_TICK",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "TICK_COUNT",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "TICK_SPACING",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "baseToken",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ConfidentialToken"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "batchDuration",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "batchOrders",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "batches",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "startTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "endTime",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "status",
+        "type": "uint8",
+        "internalType": "enum IBatchAuction.BatchStatus"
+      },
+      {
+        "name": "clearingPrice",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "matchedVolume",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "orderCount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "nextTick",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "settleCursor",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "clearBatchRange",
+    "inputs": [
+      {
+        "name": "tickStart",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "tickEnd",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "closeBatch",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "currentBatchId",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "finalizeClearing",
+    "inputs": [],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "getBatch",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct IBatchAuction.Batch",
+        "components": [
+          {
+            "name": "batchId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "startTime",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "endTime",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum IBatchAuction.BatchStatus"
+          },
+          {
+            "name": "clearingPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "matchedVolume",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "orderCount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "nextTick",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "settleCursor",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getBatchOrders",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256[]",
+        "internalType": "uint256[]"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getClearingHandles",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "volumeHandle",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "tickHandle",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getCurrentBatch",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct IBatchAuction.Batch",
+        "components": [
+          {
+            "name": "batchId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "startTime",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "endTime",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "status",
+            "type": "uint8",
+            "internalType": "enum IBatchAuction.BatchStatus"
+          },
+          {
+            "name": "clearingPrice",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "matchedVolume",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "orderCount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "nextTick",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "settleCursor",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "getOrder",
+    "inputs": [
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "internalType": "struct IBatchAuction.Order",
+        "components": [
+          {
+            "name": "trader",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "orderType",
+            "type": "uint8",
+            "internalType": "enum IBatchAuction.OrderType"
+          },
+          {
+            "name": "size",
+            "type": "bytes32",
+            "internalType": "euint64"
+          },
+          {
+            "name": "limitPrice",
+            "type": "bytes32",
+            "internalType": "euint64"
+          },
+          {
+            "name": "batchId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "filled",
+            "type": "bool",
+            "internalType": "bool"
+          }
+        ]
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "isOrderFilled",
+    "inputs": [
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "keeper",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "nextOrderId",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "orders",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "trader",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "orderType",
+        "type": "uint8",
+        "internalType": "enum IBatchAuction.OrderType"
+      },
+      {
+        "name": "size",
+        "type": "bytes32",
+        "internalType": "euint64"
+      },
+      {
+        "name": "limitPrice",
+        "type": "bytes32",
+        "internalType": "euint64"
+      },
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "filled",
+        "type": "bool",
+        "internalType": "bool"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "priceToTick",
+    "inputs": [
+      {
+        "name": "price",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "function",
+    "name": "quoteToken",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ConfidentialToken"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "type": "function",
+    "name": "settleBatchRange",
+    "inputs": [
+      {
+        "name": "startIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "endIndex",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "submitClearingResult",
+    "inputs": [
+      {
+        "name": "handles",
+        "type": "bytes32[]",
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "cleartexts",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "decryptionProof",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "submitOrder",
+    "inputs": [
+      {
+        "name": "orderType",
+        "type": "uint8",
+        "internalType": "enum IBatchAuction.OrderType"
+      },
+      {
+        "name": "encryptedSize",
+        "type": "bytes32",
+        "internalType": "externalEuint64"
+      },
+      {
+        "name": "encryptedPrice",
+        "type": "bytes32",
+        "internalType": "externalEuint64"
+      },
+      {
+        "name": "sizeProof",
+        "type": "bytes",
+        "internalType": "bytes"
+      },
+      {
+        "name": "priceProof",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "tickToPrice",
+    "inputs": [
+      {
+        "name": "tick",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "type": "event",
+    "name": "BatchCleared",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "clearingTick",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "matchedVolume",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BatchClosed",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "timestamp",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BatchOpened",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "startTime",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "duration",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "BatchSettled",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "filledOrders",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ClearingPending",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "volumeHandle",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      },
+      {
+        "name": "tickHandle",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "ClearingScanned",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "tickStart",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      },
+      {
+        "name": "tickEnd",
+        "type": "uint256",
+        "indexed": false,
+        "internalType": "uint256"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "OrderFilled",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "trader",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "OrderSubmitted",
+    "inputs": [
+      {
+        "name": "batchId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "orderId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "trader",
+        "type": "address",
+        "indexed": true,
+        "internalType": "address"
+      },
+      {
+        "name": "orderType",
+        "type": "uint8",
+        "indexed": false,
+        "internalType": "enum IBatchAuction.OrderType"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "event",
+    "name": "PublicDecryptionVerified",
+    "inputs": [
+      {
+        "name": "handlesList",
+        "type": "bytes32[]",
+        "indexed": false,
+        "internalType": "bytes32[]"
+      },
+      {
+        "name": "abiEncodedCleartexts",
+        "type": "bytes",
+        "indexed": false,
+        "internalType": "bytes"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "type": "error",
+    "name": "InvalidKMSSignatures",
+    "inputs": []
+  },
+  {
+    "type": "error",
+    "name": "SenderNotAllowedToUseHandle",
+    "inputs": [
+      {
+        "name": "handle",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "sender",
+        "type": "address",
+        "internalType": "address"
+      }
+    ]
+  },
+  {
+    "type": "error",
+    "name": "ZamaProtocolUnsupported",
+    "inputs": []
+  }
+]

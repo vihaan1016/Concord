@@ -1,70 +1,47 @@
 // ---------------------------------------------------------------------------
-// FBA DEX contract config.
-// Phase 0: placeholders so the app resolves. Phase 1 wires the real Sepolia
-// addresses + ABIs (generated in ../../out/BatchAuctionDEX.sol/*.json).
-// The legacy OmniCurve exports below are kept as empty placeholders until the
-// prediction-market files that import them are removed in later phases.
+// FBA DEX contract config. Addresses come from the deploy output via Vite env
+// (VITE_DEX_ADDRESS / VITE_BASE_TOKEN / VITE_QUOTE_TOKEN); ABIs are generated in
+// ../abis (copied from Foundry `out/`). See docs/FRONTEND_GUIDE.md.
 // ---------------------------------------------------------------------------
+import DEX_ABI_JSON from '@/abis/BatchAuctionDEX.json'
+import TOKEN_ABI_JSON from '@/abis/ConfidentialToken.json'
 
 export const CHAIN_ID = 11155111 // Ethereum Sepolia (Zama FHEVM)
 
-export const DEX_ADDRESS = '0x0000000000000000000000000000000000000000' as const
-export const BASE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000' as const
-export const QUOTE_TOKEN_ADDRESS = '0x0000000000000000000000000000000000000000' as const
+const ZERO = '0x0000000000000000000000000000000000000000' as const
 
-export const DEX_ABI = [] as const
-export const CONFIDENTIAL_TOKEN_ABI = [] as const
+export const DEX_ADDRESS = (import.meta.env.VITE_DEX_ADDRESS ?? ZERO) as `0x${string}`
+export const BASE_TOKEN_ADDRESS = (import.meta.env.VITE_BASE_TOKEN ?? ZERO) as `0x${string}`
+export const QUOTE_TOKEN_ADDRESS = (import.meta.env.VITE_QUOTE_TOKEN ?? ZERO) as `0x${string}`
 
-// --- legacy placeholders (removed in Phase 5 with the market files) ---
-export const FACTORY_ADDRESS = '0x0000000000000000000000000000000000000000' as const
-export const USDC_ADDRESS = '0x0000000000000000000000000000000000000000' as const
+export const DEX_ABI = DEX_ABI_JSON
+export const CONFIDENTIAL_TOKEN_ABI = TOKEN_ABI_JSON
+
+export const RELAYER_URL = (import.meta.env.VITE_RELAYER_URL ??
+  'https://relayer.testnet.zama.cloud') as string
+
+/** BatchStatus mirror (IBatchAuction.BatchStatus). */
+export enum BatchStatus {
+  Open = 0,
+  Closed = 1,
+  Clearing = 2,
+  Cleared = 3,
+  Settled = 4,
+}
+
+/** OrderType mirror. */
+export enum OrderType {
+  Buy = 0,
+  Sell = 1,
+}
+
+export const isConfigured = DEX_ADDRESS !== ZERO
+
+// --- legacy OmniCurve placeholders; removed in Phase 5 with the market files ---
+export const FACTORY_ADDRESS = ZERO
+export const USDC_ADDRESS = ZERO
 export const AMM_ABI = [] as const
 export const ROUTER_ABI = [] as const
 export const FACTORY_ABI = [] as const
-
-export const LP_TOKEN_ABI = [
-  {
-    name: 'totalSupply',
-    type: 'function',
-    inputs: [],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    name: 'balanceOf',
-    type: 'function',
-    inputs: [{ name: 'account', type: 'address' }],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
-  },
-] as const
-
-export const USDC_ABI = [
-  {
-    name: 'approve',
-    type: 'function',
-    inputs: [
-      { name: 'spender', type: 'address' },
-      { name: 'amount', type: 'uint256' },
-    ],
-    outputs: [{ type: 'bool' }],
-    stateMutability: 'nonpayable',
-  },
-  {
-    name: 'allowance',
-    type: 'function',
-    inputs: [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-    ],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
-  },
-  {
-    name: 'balanceOf',
-    type: 'function',
-    inputs: [{ name: 'account', type: 'address' }],
-    outputs: [{ type: 'uint256' }],
-    stateMutability: 'view',
-  },
-] as const
+export const LP_TOKEN_ABI = [] as const
+export const USDC_ABI = [] as const
