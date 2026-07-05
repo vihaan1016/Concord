@@ -4,6 +4,7 @@ import { Navbar } from './Navbar'
 import { ToastProvider } from '@/components/ui/Toast'
 import { useTheme } from '@/hooks/useTheme'
 import LiquidChromeBackground from '@/components/ui/LiquidChromeBackground'
+import { DEX_ADDRESS } from '@/config/contracts'
 
 export default function PageWrapper() {
   const { isDark } = useTheme()
@@ -30,20 +31,20 @@ export default function PageWrapper() {
             <p className={`text-xs font-mono transition-colors duration-300 ${
               isDark ? 'text-[rgba(242,242,242,0.55)]' : 'text-[rgba(35,24,18,0.50)]'
             }`}>
-              OmniCurve — Arbitrum Sepolia Testnet
+              Sealed DEX — Ethereum Sepolia Testnet (Zama FHEVM)
             </p>
             <div className={`flex items-center gap-4 text-xs font-mono transition-colors duration-300 ${
               isDark ? 'text-[rgba(242,242,242,0.55)]' : 'text-[rgba(35,24,18,0.50)]'
             }`}>
               <a
-                href="https://sepolia.arbiscan.io/address/0x61368ef9e767c8c24de1375b62ed3caafac10b0f"
+                href={`https://sepolia.etherscan.io/address/${DEX_ADDRESS}`}
                 target="_blank"
                 rel="noreferrer"
                 className={`transition-colors duration-200 ${
                   isDark ? 'hover:text-[#C8102E]' : 'hover:text-[#C8102E]'
                 }`}
               >
-                Factory ↗
+                Contract ↗
               </a>
               <span>·</span>
               <span>v0.1.0</span>

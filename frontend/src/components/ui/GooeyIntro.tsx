@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-const TEXTS = ['Every outcome.', 'One curve.', 'OmniCurve']
+const TEXTS = ['Sealed bids.', 'One price.', 'Sealed DEX']
 
 const MORPH_TIME = 1.0   // seconds spent morphing between two texts
 const COOLDOWN_TIME = 0.5 // seconds a text holds steady

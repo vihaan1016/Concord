@@ -3,8 +3,9 @@ import { motion } from 'framer-motion'
 import { ConnectButton } from '@/components/wallet/ConnectButton'
 
 const navLinks = [
-  { to: '/markets', label: 'Markets' },
-  { to: '/dashboard', label: 'Dashboard' },
+  { to: '/trade', label: 'Trade' },
+  { to: '/batches', label: 'Batches' },
+  { to: '/portfolio', label: 'Portfolio' },
   { to: '/docs', label: 'Docs' },
 ]
 
@@ -27,7 +28,7 @@ export function Navbar() {
             <line x1="16" y1="8" x2="16" y2="24" stroke="rgba(43,29,20,0.40)" strokeWidth="1" strokeDasharray="2 2" />
           </svg>
           <span className="font-display font-800 text-sm tracking-wider text-[#231812] group-hover:text-[#C8102E] transition-colors duration-200">
-            OMNI<span className="text-[#C8102E]">CURVE</span>
+            SEALED<span className="text-[#C8102E]">DEX</span>
           </span>
         </Link>
 
