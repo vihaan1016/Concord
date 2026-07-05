@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -9,8 +9,10 @@ import { useFaucet } from '@/hooks/useFaucet'
 import { useOperatorApproval } from '@/hooks/useOperatorApproval'
 import { useFhe } from '@/hooks/useFhe'
 import { OrderType, isConfigured } from '@/config/contracts'
-import { priceUsdToTick, tickLabel, MAX_SIZE } from '@/lib/ticks'
-import { BatchCountdown, BatchStatusPill } from '@/components/batch/BatchVisualizer'
+import { tickLabel, MAX_SIZE } from '@/lib/ticks'
+import { BatchCountdown, BatchStatusPill, SealedSlots } from '@/components/batch/BatchVisualizer'
+import { TickSlider } from '@/components/batch/TickSlider'
+import { ClearingResult } from '@/components/batch/ClearingResult'
 
 export default function Trade() {
   const { address } = useAccount()
@@ -22,21 +24,19 @@ export default function Trade() {
   const { isApproved, approveOperator, approving } = useOperatorApproval()
 
   const [side, setSide] = useState<OrderType>(OrderType.Buy)
-  const [price, setPrice] = useState('')
+  const [tick, setTick] = useState(15)
   const [size, setSize] = useState('')
 
-  const tick = useMemo(() => (price ? priceUsdToTick(Number(price)) : null), [price])
   const sizeNum = size ? Number(size) : 0
-  const valid = tick !== null && sizeNum > 0 && sizeNum <= MAX_SIZE
+  const valid = sizeNum > 0 && sizeNum <= MAX_SIZE
 
   const onSubmit = async () => {
     if (!address) return toast('error', 'Connect a wallet')
     if (!fheReady) return toast('error', 'Encryption still initialising')
-    if (!valid || tick === null) return toast('error', 'Enter a valid price and size')
+    if (!valid) return toast('error', 'Enter a valid size')
     try {
       await submit({ side, tick, size: sizeNum })
       toast('success', 'Sealed order submitted 🔒')
-      setPrice('')
       setSize('')
       setTimeout(reset, 1500)
     } catch (e) {
@@ -70,8 +70,14 @@ export default function Trade() {
           </h2>
           <BatchStatusPill status={batch?.status ?? 'Open'} />
         </div>
+        <div className="mt-6">
+          <div className="text-xs font-mono uppercase tracking-wider text-text-subtle mb-2">
+            Sealed orders ({batch?.orderCount ?? 0})
+          </div>
+          <SealedSlots count={batch?.orderCount ?? 0} />
+        </div>
+
         <div className="mt-6 grid grid-cols-2 gap-4">
-          <Stat label="Orders sealed" value={batch ? String(batch.orderCount) : '—'} />
           <Stat label="Closes in" value={<BatchCountdown endTime={batch?.endTime ?? null} />} />
           <Stat
             label="Clearing price"
@@ -83,6 +89,12 @@ export default function Trade() {
           Orders accumulate encrypted. On close, the keeper computes one uniform clearing price over the
           sealed book and settles crossing orders confidentially.
         </p>
+
+        {batch?.clearingTick != null && (
+          <div className="mt-6">
+            <ClearingResult clearingTick={batch.clearingTick} matchedVolume={batch.matchedVolume} />
+          </div>
+        )}
       </section>
 
       {/* Order form */}
@@ -98,21 +110,7 @@ export default function Trade() {
           </SideButton>
         </div>
 
-        <label className="block text-xs font-mono uppercase tracking-wider text-text-muted mb-1">
-          Limit price (USD)
-        </label>
-        <Input
-          type="number"
-          step="0.10"
-          placeholder="2.50"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-        {tick !== null && (
-          <p className="mt-1 font-mono text-xs text-text-subtle">
-            tick {tick} · {tickLabel(tick)}
-          </p>
-        )}
+        <TickSlider tick={tick} onChange={setTick} />
 
         <label className="block text-xs font-mono uppercase tracking-wider text-text-muted mb-1 mt-4">
           Size

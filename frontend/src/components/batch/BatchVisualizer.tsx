@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import type { BatchStatusName } from '@/lib/api'
 
 const STATUS_ORDER: BatchStatusName[] = ['Open', 'Closed', 'Clearing', 'Cleared', 'Settled']
@@ -35,6 +36,40 @@ export function BatchCountdown({ endTime }: { endTime: number | null }) {
   const mm = String(Math.floor(remaining / 60)).padStart(2, '0')
   const ss = String(remaining % 60).padStart(2, '0')
   return <>{remaining > 0 ? `${mm}:${ss}` : 'closing'}</>
+}
+
+/**
+ * Sealed-slot grid — one locked cell per order in the batch. New orders animate in.
+ * The whole point of the demo: the market sees slots FILL, never their contents.
+ */
+export function SealedSlots({ count, max = 24 }: { count: number; max?: number }) {
+  const shown = Math.min(count, max)
+  const cells = Array.from({ length: Math.max(shown, 8) })
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      <AnimatePresence>
+        {cells.map((_, i) => {
+          const filled = i < shown
+          return (
+            <motion.div
+              key={i}
+              initial={filled ? { scale: 0, opacity: 0 } : false}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: 'spring', stiffness: 500, damping: 24, delay: filled ? i * 0.02 : 0 }}
+              className="h-6 w-6 rounded flex items-center justify-center text-[10px]"
+              style={{
+                background: filled ? 'var(--accent-data-dim)' : 'transparent',
+                border: `1px solid ${filled ? 'var(--accent-data)' : 'var(--border)'}`,
+                color: 'var(--accent-data)',
+              }}
+            >
+              {filled ? '🔒' : ''}
+            </motion.div>
+          )
+        })}
+      </AnimatePresence>
+    </div>
+  )
 }
 
 /** Horizontal pipeline showing progress through the lifecycle. */
