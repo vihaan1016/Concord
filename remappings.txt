@@ -1,0 +1,4 @@
+@fhevm/=lib/fhevm/contracts/
+@openzeppelin-confidential/=lib/openzeppelin-confidential-contracts/contracts/
+@forge-std/=lib/forge-std/src/
+@forge-fhevm/=lib/forge-fhevm/src/
