@@ -19,3 +19,8 @@ keeper/dist/
 .DS_Store
 *.log
 foundry.lock
+
+# Frontend / indexer build output
+frontend/dist/
+indexer/dist/
+frontend/.vite/
