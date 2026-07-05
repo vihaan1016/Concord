@@ -1,9 +1,10 @@
 import { Routes, Route } from 'react-router-dom'
 import PageWrapper from '@/components/layout/PageWrapper'
 import Landing from '@/pages/Landing'
-import Marketplace from '@/pages/Marketplace'
-import MarketDetail from '@/pages/MarketDetail'
-import UserDashboard from '@/pages/UserDashboard'
+import Trade from '@/pages/Trade'
+import Batches from '@/pages/Batches'
+import BatchDetail from '@/pages/BatchDetail'
+import Portfolio from '@/pages/Portfolio'
 import Docs from '@/pages/Docs'
 
 export default function App() {
@@ -11,9 +12,10 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Landing />} />
       <Route element={<PageWrapper />}>
-        <Route path="/markets" element={<Marketplace />} />
-        <Route path="/markets/:marketId" element={<MarketDetail />} />
-        <Route path="/dashboard" element={<UserDashboard />} />
+        <Route path="/trade" element={<Trade />} />
+        <Route path="/batches" element={<Batches />} />
+        <Route path="/batches/:id" element={<BatchDetail />} />
+        <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/docs" element={<Docs />} />
       </Route>
     </Routes>

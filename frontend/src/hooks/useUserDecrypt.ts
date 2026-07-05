@@ -32,11 +32,11 @@ export function useUserDecrypt() {
         delete (types as { EIP712Domain?: unknown }).EIP712Domain
 
         const signature = await signTypedDataAsync({
-          domain: eip712.domain as never,
-          types: types as never,
+          domain: eip712.domain,
+          types,
           primaryType: (eip712 as { primaryType: string }).primaryType,
           message: (eip712 as { message: Record<string, unknown> }).message,
-        })
+        } as unknown as Parameters<typeof signTypedDataAsync>[0])
 
         const res = await fhe.userDecrypt(
           [{ handle, contractAddress: DEX_ADDRESS }],

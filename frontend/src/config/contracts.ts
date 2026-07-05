@@ -37,12 +37,3 @@ export enum OrderType {
 }
 
 export const isConfigured = DEX_ADDRESS !== ZERO
-
-// --- legacy OmniCurve placeholders; removed in Phase 5 with the market files ---
-export const FACTORY_ADDRESS = ZERO
-export const USDC_ADDRESS = ZERO
-export const AMM_ABI = [] as const
-export const ROUTER_ABI = [] as const
-export const FACTORY_ABI = [] as const
-export const LP_TOKEN_ABI = [] as const
-export const USDC_ABI = [] as const

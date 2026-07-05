@@ -8,6 +8,7 @@ import '@rainbow-me/rainbowkit/styles.css'
 
 import { wagmiConfig } from '@/config/wagmi'
 import { connectSocket } from '@/lib/socket'
+import { getFheInstance } from '@/lib/fhe'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { useTheme } from '@/hooks/useTheme'
 import { useLiveRefetch } from '@/hooks/useLiveRefetch'
@@ -26,6 +27,8 @@ const queryClient = new QueryClient({
 function Root() {
   useEffect(() => {
     connectSocket()
+    // Warm up the relayer WASM so the first order encrypts instantly.
+    getFheInstance().catch(() => {})
   }, [])
   useLiveRefetch()
   return <App />
