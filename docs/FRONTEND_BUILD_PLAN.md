@@ -33,23 +33,36 @@ Reuse verbatim (rebrand only): `components/ui/*`, `components/layout/*`, `wallet
 ## Phases
 
 - **Phase 0 — Scaffold ✅** — `frontend/` (Vite app booting) + `indexer/` (Express+socket, `/api/health` ok) + this doc.
-- **Phase 1 — Config & contracts** — wagmi Sepolia + Zama RPC; `contracts.ts` with DEX/token addresses +
-  ABIs copied from `out/BatchAuctionDEX.sol/*.json`, `out/ConfidentialToken.sol/*.json` into `frontend/src/abis/`.
-- **Phase 2 — Design system + UI kit** — port tokens/fonts/globals + UI primitives + layout; rebrand copy/accent.
-- **Phase 3 — FHE layer** — `lib/fhe.ts` relayer instance; hooks `useEncryptOrder`, `useUserDecrypt`,
-  `useOperatorApproval`, `useFaucet`; `lib/ticks.ts` price↔tick + euint64 scaling.
-- **Phase 4 — Indexer** — viem `watchContractEvent` for all DEX events → Postgres (`batches`, `orders`) →
-  socket emits (`batch:update`, `order:new`, `batch:cleared`, `order:filled`); REST routes.
-- **Phase 5 — Pages & hooks** — `useCurrentBatch/useBatches/useMyOrders/useSubmitOrder`; pages
-  Landing / Trade / Batches / Portfolio / Docs; routing + provider tree (add FHE init).
-- **Phase 6 — Domain components** — `OrderForm`, `TickSlider`, `BatchVisualizer`, `ClearingResult`,
-  `OrderCard`, `DecryptPanel`, `FaucetModal`.
-- **Phase 7 — Polish & deploy** — framer-motion; the "read another's order → blocked" proof; deploy
-  frontend (Vercel), add indexer to `docker-compose.yml` alongside the keeper.
+- **Phase 1 — Config & contracts ✅** — wagmi Sepolia + Zama RPC; `contracts.ts` env-driven addresses +
+  ABIs in `frontend/src/abis/`.
+- **Phase 2 — Design system + UI kit ✅** — kept the "Ledger Paper" tokens/fonts/UI kit; rebranded shell.
+- **Phase 3 — FHE layer ✅** — `lib/fhe.ts` relayer instance; `useEncryptOrder`, `useUserDecrypt`,
+  `useOperatorApproval`, `useFaucet`; `lib/ticks.ts`.
+- **Phase 4 — Indexer ✅** — viem backfill + `watchContractEvent` → Postgres/in-memory store → socket
+  emits; REST routes.
+- **Phase 5 — Pages & hooks ✅** — `useCurrentBatch/useBatches/useBatch/useMyOrders/useSubmitOrder`;
+  Landing / Trade / Batches / BatchDetail / Portfolio / Docs; routing + FHE warm-up.
+- **Phase 6 — Domain components ✅** — `TickSlider`, `ClearingResult`, `SealedSlots` + `BatchVisualizer`
+  (countdown, status pill, pipeline). Order form + decrypt panel live inline in Trade/Portfolio.
+- **Phase 7 — Deploy prep ✅** — indexer Dockerfile + service in `docker-compose.yml` (Grafana moved to
+  :3002 to free :3001); `vercel.json` SPA rewrite. The "read another's order → blocked" proof is inherent
+  in Portfolio (user-decrypt only authorizes your own handles).
 
-## Verify (per phase)
+## Deploy
 
-Phase 0: `cd frontend && npm run dev` serves 200; `cd indexer && npm run dev` → `GET /api/health` ok.
-Later phases: typecheck clean; the referenced flow works end-to-end in the browser against a deployed DEX.
-Final: on Sepolia, a trader does faucet→approve→encrypted submit→clear→settle→user-decrypt, and a second
-trader provably cannot read the first's order.
+```bash
+# Frontend (Vercel) — set VITE_* env vars from .env.example in the project settings
+cd frontend && npm run build   # or: vercel --prod
+
+# Indexer + keeper + observability
+cp indexer/.env.example indexer/.env   # set DEX_ADDRESS, RPC_URL
+cp keeper/.env.example  keeper/.env
+docker compose up --build              # postgres, keeper, indexer(:3001), prometheus(:9090), grafana(:3002)
+```
+
+## Verify
+
+Phase 0: `frontend` dev serves 200; `indexer` `/api/health` ok. Frontend: `npm run typecheck` + `npm run
+build` clean. Final (needs deployed DEX + running keeper + indexer): a trader does
+faucet→approve→encrypted submit→clear→settle→user-decrypt in the browser, and a second trader provably
+cannot read the first's order.

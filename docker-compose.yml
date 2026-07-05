@@ -29,6 +29,20 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
+  indexer:
+    build: ./indexer
+    env_file:
+      - ./indexer/.env
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgresql://keeper:keeper@postgres:5432/fba_keeper
+    ports:
+      - "3001:3001"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   prometheus:
     image: prom/prometheus:latest
     volumes:
@@ -47,7 +61,7 @@ services:
       - ./infra/grafana/provisioning:/etc/grafana/provisioning:ro
       - grafana-data:/var/lib/grafana
     ports:
-      - "3001:3000"
+      - "3002:3000"
     depends_on:
       - prometheus
 
