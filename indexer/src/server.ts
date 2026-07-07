@@ -28,9 +28,9 @@ async function main(): Promise<void> {
   const httpServer = createServer(app);
   initSocket(httpServer);
 
-  const unwatch = await startChainWatcher(store);
-
   httpServer.listen(config.PORT, () => logger.info(`indexer listening on :${config.PORT}`));
+
+  const unwatch = await startChainWatcher(store);
 
   const shutdown = (signal: string) => {
     logger.info(`received ${signal}, shutting down`);
