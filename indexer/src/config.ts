@@ -12,7 +12,13 @@ const envSchema = z.object({
   DATABASE_URL: z.string().optional(),
   CORS_ORIGINS: z.string().optional().default(''),
   // Block to start indexing from (deploy block); 0 = from genesis of the filter.
-  START_BLOCK: z.string().optional().default('0').transform((s) => BigInt(s)),
+  START_BLOCK: z.string().optional().default('0').transform((s) => {
+    try {
+      return BigInt(s);
+    } catch {
+      return 0n;
+    }
+  }),
   BACKFILL_BLOCK_RANGE: z.string().optional().default('10').transform(Number).pipe(z.number().int().positive()),
 });
 

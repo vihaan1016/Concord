@@ -27,6 +27,9 @@ async function process(store: Store, logs: DecodedLog[]): Promise<void> {
 async function backfill(store: Store, address: `0x${string}`): Promise<void> {
   const latest = await publicClient.getBlockNumber();
   let fromBlock = config.START_BLOCK;
+  if (fromBlock === 0n) {
+    fromBlock = latest > 100n ? latest - 100n : 0n;
+  }
   let count = 0;
   const step = BigInt(config.BACKFILL_BLOCK_RANGE);
 
