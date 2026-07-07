@@ -3,7 +3,7 @@
 A single end-to-end script for recording the demo. At every beat it tells you what to **say**, what to
 **show on the deck**, and what to **do on the live app** — plus how to start everything and how to close.
 
-**Deck:** `docs/Concord_Deck.pdf` (14 slides)
+**Deck:** `docs/Concord_Deck.pdf` (15 slides)
 **App:** `http://localhost:5173` (or the live URL)
 **Target length:** ~4 minutes.
 
@@ -72,18 +72,30 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 - **WATCH-FOR:** land on slide 3 (Solution) before moving on.
 
 ### B1 · How it clears + the six steps · ~20s
-- **SLIDE:** 4 (Lifecycle) → 5 (End-to-end, steps 01–06).
+- **SLIDE:** 4 (Lifecycle) → 6 (End-to-end, steps 01–06).
 - **SCREEN:** deck only.
 - **SAY:** "A batch moves through five states — **Open, Closed, Clearing, Cleared, Settled** — and a
   keeper drives every transition automatically: it scans the encrypted price grid in gas-sized chunks,
   public-decrypts only the winning tick, and settles confidentially. Everything I'm about to show is live
   on Sepolia — six steps: faucet, approve, seal an order, watch the book fill, the keeper clears, and I
   decrypt my own fill."
-- **DO:** hold on slide 4 for the states, slide 5 for the six-step map.
+- **DO:** hold on slide 4 for the states, slide 6 for the six-step map.
 - **WATCH-FOR:** the audience has the lifecycle + map before you switch to the app.
 
+### B1b · Architecture, in one slide · ~15s
+- **SLIDE:** 5 (Architecture, the full sequence).
+- **SCREEN:** deck only.
+- **SAY:** "And this is the whole trust chain in one picture — fifteen steps, four actors: your wallet,
+  the DEX contract, the off-chain keeper, and Zama's relayer and KMS. Encrypt, submit, clear under FHE,
+  a KMS-verified public decrypt of just the winner, confidential settlement, and finally your own
+  EIP-712 decrypt at the end. Nothing here is a black box — it's the exact sequence in the repo's
+  README."
+- **DO:** hold on slide 5; trace the numbered steps top-to-bottom, left column then right.
+- **WATCH-FOR:** the audience sees this is one auditable chain, not a hand-wave — sets up the live demo
+  that follows.
+
 ### B2 · Enter the app & connect · ~15s
-- **SLIDE:** 6 (demo·1/6).
+- **SLIDE:** 7 (demo·1/6).
 - **SCREEN:** app → Landing (`/`), then Connect.
 - **SAY:** "Here's the app — 'trade without showing your hand.' I connect my wallet on Sepolia, and
   everything from here is real on-chain state, streamed live from our indexer."
@@ -93,7 +105,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
   configured").
 
 ### B3 · Step 1 — Claim from the faucet · ~15s
-- **SLIDE:** 7 (demo·2/6).
+- **SLIDE:** 8 (demo·2/6).
 - **SCREEN:** app → **Trade** (order form, right).
 - **SAY:** "First I need test tokens. One click on the faucet mints confidential test balances straight
   to my wallet."
@@ -101,7 +113,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 - **WATCH-FOR:** the tx confirms (faucet button settles back from its loading state).
 
 ### B4 · Step 2 — Approve the DEX operator · ~15s
-- **SLIDE:** 7 (demo·2/6).
+- **SLIDE:** 8 (demo·2/6).
 - **SCREEN:** app → **Trade**.
 - **SAY:** "Next I authorize the DEX as an operator on my confidential tokens — that's what lets it move
   my balances when a batch settles. One approval covers both sides."
@@ -110,7 +122,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
   **Submit sealed order** enabled.
 
 ### B5 · Step 3 — Seal & submit an order · ~35s
-- **SLIDE:** 7 (demo·2/6).
+- **SLIDE:** 8 (demo·2/6).
 - **SCREEN:** app → **Trade** (order form).
 - **SAY:** "Now I place a sealed order. I pick a side — Buy — I drag the limit price onto the 32-tick
   grid, say **$1.51, tick 15**, and I enter a size. When I submit, my price and size are **FHE-encrypted
@@ -122,7 +134,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
   the locked-cell grid tick up by one.
 
 ### B6 · Step 4 — The sealed book · ~20s
-- **SLIDE:** 8 (demo·3/6).
+- **SLIDE:** 9 (demo·3/6).
 - **SCREEN:** app → the left card on **Trade** (or **Batches → this batch**).
 - **SAY:** "This is the whole point. The market watches slots **fill** — each locked cell is one order —
   but never their contents. Every price and size on the book stays encrypted on-chain. A searcher sees a
@@ -132,7 +144,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 - **WATCH-FOR:** the 🔒 rows — side visible, price/size masked.
 
 ### B7 · Step 5 — Clearing at one price (pre-staged batch) · ~35s
-- **SLIDE:** 9 (demo·4/6).
+- **SLIDE:** 10 (demo·4/6).
 - **SCREEN:** app → **Batches** → open the **pre-staged settled batch** (`#<pre-staged batch>`).
 - **SAY:** "Clearing is asynchronous and keeper-driven, so let me show a batch that's already closed.
   Here's batch `#<pre-staged batch>` — the pipeline shows it's **Settled**. When the window ended, the
@@ -144,7 +156,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 - **WATCH-FOR:** pipeline fully lit to **Settled**; a real clearing price (e.g. `$1.51`) + matched volume.
 
 ### B8 · Step 6 — Decrypt your own fill · ~30s
-- **SLIDE:** 10 (demo·5/6).
+- **SLIDE:** 11 (demo·5/6).
 - **SCREEN:** app → **Portfolio**.
 - **SAY:** "And here's the payoff. In my Portfolio I see my orders — still sealed. I click **Decrypt my
   order**, sign a single **EIP-712** request to prove I'm the owner, and the price and size are revealed
@@ -154,33 +166,33 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 - **WATCH-FOR:** the masked order flips to a real `price · size` line (e.g. `$1.51 · size 250`).
 
 ### B9 · The core guarantee — you can't read my order · ~20s
-- **SLIDE:** 11 (Privacy proof).
+- **SLIDE:** 12 (Privacy proof).
 - **SCREEN:** deck only (optional: a second wallet aside — see note).
 - **SAY:** "This isn't UI-level privacy — it's enforced on-chain. User-decryption only authorizes handles
   the on-chain ACL granted to **you**. Point the exact same flow at another trader's order and it fails
   the access check. The seal is real."
-- **DO:** hold on slide 11; name the two columns (what you can vs. cannot decrypt).
+- **DO:** hold on slide 12; name the two columns (what you can vs. cannot decrypt).
 - **WATCH-FOR:** both sides of the guarantee are stated clearly.
 - **OPTIONAL (2nd wallet):** if you have a second connected account, try to decrypt the first wallet's
   order handle with it and show the access-check failure.
 
 ### B10 · Extensibility & scope · ~15s
-- **SLIDE:** 12 (Extensibility).
+- **SLIDE:** 13 (Extensibility).
 - **SCREEN:** deck only.
 - **SAY:** "The 32-tick grid is a parameter, not a hard-coding — widening it is a constant change; the
   encrypted math and the keeper's chunked scan already generalize. And the indexer that streams all of
   this persists **metadata only** — never a price or size; those stay encrypted on-chain."
-- **DO:** hold on slide 12; point at the two code paths (price grid / indexer).
+- **DO:** hold on slide 13; point at the two code paths (price grid / indexer).
 - **WATCH-FOR:** both points (parameterized grid + metadata-only indexer) land.
 
 ### B11 · Close — criteria recap + thank you · ~20s
-- **SLIDE:** 13 (Judged on) → 14 (Thank you).
+- **SLIDE:** 14 (Judged on) → 15 (Thank you).
 - **SCREEN:** deck only.
 - **SAY:** "That's Concord end to end — confidential by construction, correct FHE clearing and
   settlement, MEV-resistant because there's nothing to front-run, and a clean production UI. It's live at
   `<live URL>` and the code is at `<repo link>`. Thanks for watching."
-- **DO:** advance 13 → 14; end on the thank-you slide.
-- **WATCH-FOR:** stop recording on slide 14.
+- **DO:** advance 14 → 15; end on the thank-you slide.
+- **WATCH-FOR:** stop recording on slide 15.
 
 ---
 
@@ -190,6 +202,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 |------|---------|-------|
 | B0 | Intro / problem / solution | 0:30 |
 | B1 | Lifecycle + six steps | 0:20 |
+| B1b | Architecture, in one slide | 0:15 |
 | B2 | Enter app / connect | 0:15 |
 | B3 | Faucet | 0:15 |
 | B4 | Approve operator | 0:15 |
@@ -200,7 +213,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 | B9 | Privacy proof | 0:20 |
 | B10 | Extensibility | 0:15 |
 | B11 | Close | 0:20 |
-| | **Total** | **~4:10** |
+| | **Total** | **~4:45** |
 
 **Slow-transaction fallback lines** (keep talking while a tx confirms — dead air reads as broken):
 - Faucet / approve pending: "While Sepolia confirms this — remember the whole point is that nothing about
@@ -210,7 +223,7 @@ Each beat lists **SLIDE** (deck), **SCREEN** (app), **SAY** (narration), **DO** 
 - Decrypt pending: "The EIP-712 signature proves ownership without exposing my key — the reveal is to me
   only, and it's cached for the session."
 
-**If a live tx fails on camera:** don't fight it — cut to the matching deck slide (6–10), narrate the
+**If a live tx fails on camera:** don't fight it — cut to the matching deck slide (7–11), narrate the
 step from the screenshot there, and move on. The deck mirrors every action.
 
 ---

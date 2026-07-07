@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="150" viewBox="0 0 560 150" fill="none" role="img" aria-label="Concord — Sealed-Bid Batch-Auction DEX">
+  <!-- panel -->
+  <rect x="1" y="1" width="558" height="148" rx="24" fill="#FDF8EE" stroke="rgba(62,44,30,0.20)" stroke-width="1"/>
+
+  <!-- monogram tile: two sides converging on one price -->
+  <g transform="translate(40 39)">
+    <rect width="72" height="72" rx="16" fill="rgba(200,16,46,0.08)"/>
+    <g transform="translate(4 4) scale(2)">
+      <path d="M7 9 Q10 22 16 23" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M25 9 Q22 22 16 23" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="16" cy="23" r="1.9" fill="#C8102E"/>
+    </g>
+  </g>
+
+  <!-- wordmark + subtitle -->
+  <text x="140" y="70" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="42" font-weight="800" letter-spacing="-1" fill="#231812">CON<tspan fill="#C8102E">CORD</tspan></text>
+  <text x="142" y="102" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="500" letter-spacing="0.3" fill="#6b5d4f">Sealed-Bid Batch-Auction DEX</text>
+</svg>

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/concord-logo.svg" alt="Concord — Sealed-Bid Batch-Auction DEX" width="480" />
+</p>
+
 # CONCORD
 
 ## Introduction
@@ -348,7 +352,7 @@ Copy those three addresses into `keeper/.env` (`DEX_ADDRESS`), `indexer/.env` (`
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -408,16 +412,6 @@ cd indexer  && npm run typecheck && cd ..
 | Frontend / keeper / indexer | typecheck clean — no unit-test suites yet |
 
 ---
-
-## Docs
-
-| Doc | For |
-|-----|-----|
-| [`docs/SPEC.md`](./docs/SPEC.md) | The original spec / pitch brief |
-| [`docs/BACKEND_AUDIT.md`](./docs/BACKEND_AUDIT.md) | Audit findings + contract behaviour |
-| [`docs/FRONTEND_GUIDE.md`](./docs/FRONTEND_GUIDE.md) | Contract surface + encryption reference for frontend devs |
-| [`docs/DEMO_SCRIPT.md`](./docs/DEMO_SCRIPT.md) | Recording run-of-show (deck + live app, beat-by-beat) |
-| [`docs/Concord_Deck.pdf`](./docs/Concord_Deck.pdf) | 14-slide pitch deck |
 
 ## Layout
 

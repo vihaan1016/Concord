@@ -24,3 +24,6 @@ foundry.lock
 frontend/dist/
 indexer/dist/
 frontend/.vite/
+
+# Deck build intermediates (regenerate via scripts/deck-slide-shots.mjs)
+docs/deck-assets/slides/

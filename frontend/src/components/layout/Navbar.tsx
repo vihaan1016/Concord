@@ -16,16 +16,10 @@ export function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5 group">
           <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="4" fill="rgba(200,16,46,0.10)" />
-            <path
-              d="M4 24 Q8 8 16 8 Q24 8 28 24"
-              stroke="#C8102E"
-              strokeWidth="2"
-              fill="none"
-              strokeLinecap="round"
-            />
-            <circle cx="16" cy="8" r="2" fill="#2B1D14" />
-            <line x1="16" y1="8" x2="16" y2="24" stroke="rgba(43,29,20,0.40)" strokeWidth="1" strokeDasharray="2 2" />
+            <rect width="32" height="32" rx="7" fill="rgba(200,16,46,0.08)" />
+            <path d="M7 9 Q10 22 16 23" stroke="#C8102E" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+            <path d="M25 9 Q22 22 16 23" stroke="#C8102E" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+            <circle cx="16" cy="23" r="1.9" fill="#C8102E" />
           </svg>
           <span className="font-display font-800 text-sm tracking-wider text-[#231812] group-hover:text-[#C8102E] transition-colors duration-200">
             CON<span className="text-[#C8102E]">CORD</span>

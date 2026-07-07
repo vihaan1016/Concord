@@ -228,6 +228,23 @@
   .pipe .stage.term { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
   .pipe .arr { color: var(--faint); margin: 0 12px; font-size: 20px; }
 
+  /* Architecture sequence runbook -------------------------------------- */
+  .arch-cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 48px; margin-top: 10px; }
+  .arch-col { display: flex; flex-direction: column; gap: 13px; }
+  .arch-step { display: grid; grid-template-columns: 26px 118px 1fr; column-gap: 10px; align-items: baseline; }
+  .arch-step .an {
+    font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px; font-weight: 700; color: var(--accent);
+  }
+  .arch-step .aw {
+    font-family: "Satoshi", sans-serif; font-weight: 800; font-size: 13px; color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .arch-step .ac {
+    font-family: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12.5px; line-height: 1.4; color: var(--muted);
+  }
+
   /* Sealed-slots grid (SealedSlots component) ------------------------- */
   .slots { display: flex; flex-wrap: wrap; gap: 8px; max-width: 460px; }
   .slots .cell {
@@ -266,10 +283,10 @@
 <section class="slide">
   <div class="brand">
     <svg class="tile" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="1" width="30" height="30" rx="7" fill="#FDF8EE" stroke="rgba(62,44,30,0.22)"/>
-      <path d="M11 15v-3a5 5 0 0 1 10 0v3" fill="none" stroke="#C8102E" stroke-width="2.4" stroke-linecap="round"/>
-      <rect x="9" y="15" width="14" height="11" rx="2.5" fill="none" stroke="#C8102E" stroke-width="2.4"/>
-      <circle cx="16" cy="20" r="1.7" fill="#C8102E"/>
+      <rect x="1" y="1" width="30" height="30" rx="7" fill="rgba(200,16,46,0.08)" stroke="rgba(62,44,30,0.22)"/>
+      <path d="M7 9 Q10 22 16 23" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M25 9 Q22 22 16 23" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="16" cy="23" r="1.9" fill="#C8102E"/>
     </svg>
     <span class="name">CON<span class="dot">CORD</span></span>
   </div>
@@ -333,7 +350,36 @@
   </div>
 </section>
 
-<!-- 5 · END TO END ----------------------------------------------------- -->
+<!-- 5 · ARCHITECTURE (full sequence) ------------------------------------ -->
+<section class="slide">
+  <div class="eyebrow">Technical detail</div>
+  <div class="title" style="font-size:54px;">ARCHITECTURE,<span class="hw">the full sequence</span></div>
+  <div class="subtitle" style="margin-top:14px;margin-bottom:8px;font-size:19px;">Every step of one batch's life, start to finish — four actors, no step skipped, the same sequence verified in <span class="mono" style="font-size:0.85em;">README.md</span>.</div>
+  <div class="arch-cols">
+    <div class="arch-col">
+      <div class="arch-step"><span class="an">01</span><span class="aw">Trader → DEX</span><span class="ac">submitOrder(side, encSize, encPrice, proofs)</span></div>
+      <div class="arch-step"><span class="an">02</span><span class="aw">DEX</span><span class="ac">FHE.fromExternal + allowThis + allow(trader)</span></div>
+      <div class="arch-step"><span class="an">03</span><span class="aw">Keeper → DEX</span><span class="ac">closeBatch() — window elapsed</span></div>
+      <div class="arch-step"><span class="an">04</span><span class="aw">Keeper → DEX</span><span class="ac">clearBatchRange(tickStart, tickEnd) · loop to MAX_TICK</span></div>
+      <div class="arch-step"><span class="an">05</span><span class="aw">DEX</span><span class="ac">demand/supply per tick → min() → argmaxStep()</span></div>
+      <div class="arch-step"><span class="an">06</span><span class="aw">Keeper → DEX</span><span class="ac">finalizeClearing()</span></div>
+      <div class="arch-step"><span class="an">07</span><span class="aw">DEX</span><span class="ac">makePubliclyDecryptable(bestVol, bestTick)</span></div>
+      <div class="arch-step"><span class="an">08</span><span class="aw">Keeper → Relayer</span><span class="ac">public-decrypt the two handles</span></div>
+    </div>
+    <div class="arch-col">
+      <div class="arch-step"><span class="an">09</span><span class="aw">Relayer → Keeper</span><span class="ac">cleartexts + KMS signatures</span></div>
+      <div class="arch-step"><span class="an">10</span><span class="aw">Keeper → DEX</span><span class="ac">submitClearingResult(handles, cleartexts, proof)</span></div>
+      <div class="arch-step"><span class="an">11</span><span class="aw">DEX</span><span class="ac">checkSignatures() → BatchCleared(tick, volume)</span></div>
+      <div class="arch-step"><span class="an">12</span><span class="aw">Keeper → DEX</span><span class="ac">settleBatchRange(start, end) · loop to orderCount</span></div>
+      <div class="arch-step"><span class="an">13</span><span class="aw">DEX</span><span class="ac">select(fill, amount, 0) confidential transfer</span></div>
+      <div class="arch-step"><span class="an">14</span><span class="aw">DEX → Trader</span><span class="ac">BatchSettled — filled or not, never revealed on-chain</span></div>
+      <div class="arch-step"><span class="an">15</span><span class="aw">Trader → Relayer</span><span class="ac">EIP-712 user-decrypt → your price · size (only yours)</span></div>
+    </div>
+  </div>
+  <div class="footpill">Trader · BatchAuctionDEX · Off-chain Keeper · Zama Relayer / KMS</div>
+</section>
+
+<!-- 6 · END TO END ----------------------------------------------------- -->
 <section class="slide">
   <div class="eyebrow">Live demo</div>
   <div class="title">END-TO-END<span class="hw">on Sepolia</span></div>
@@ -348,7 +394,7 @@
   </div>
 </section>
 
-<!-- 6 · BROWSE (real Landing screenshot) ------------------------------- -->
+<!-- 7 · BROWSE (real Landing screenshot) ------------------------------- -->
 <section class="slide">
   <div class="eyebrow">Coverage</div>
   <div class="demo-tag">demo · 1 / 6</div>
@@ -363,7 +409,7 @@
   </div>
 </section>
 
-<!-- 7 · SEAL YOUR ORDER (TickSlider motif) ----------------------------- -->
+<!-- 8 · SEAL YOUR ORDER (TickSlider motif) ----------------------------- -->
 <section class="slide">
   <div class="eyebrow">Correctness</div>
   <div class="demo-tag">demo · 2 / 6</div>
@@ -405,7 +451,7 @@
   </div>
 </section>
 
-<!-- 8 · THE SEALED BOOK (SealedSlots motif) ---------------------------- -->
+<!-- 9 · THE SEALED BOOK (SealedSlots motif) ---------------------------- -->
 <section class="slide">
   <div class="eyebrow">Confidentiality</div>
   <div class="demo-tag">demo · 3 / 6</div>
@@ -427,7 +473,7 @@
   </div>
 </section>
 
-<!-- 9 · CLEAR AT ONE PRICE (ClearingResult motif) ---------------------- -->
+<!-- 10 · CLEAR AT ONE PRICE (ClearingResult motif) ---------------------- -->
 <section class="slide">
   <div class="eyebrow">Correctness</div>
   <div class="demo-tag">demo · 4 / 6</div>
@@ -448,7 +494,7 @@
   </div>
 </section>
 
-<!-- 10 · DECRYPT YOUR FILL (real Docs screenshot) ---------------------- -->
+<!-- 11 · DECRYPT YOUR FILL (real Docs screenshot) ---------------------- -->
 <section class="slide">
   <div class="eyebrow">Correctness · EIP-712</div>
   <div class="demo-tag">demo · 5 / 6</div>
@@ -463,7 +509,7 @@
   </div>
 </section>
 
-<!-- 11 · PRIVACY PROOF ------------------------------------------------- -->
+<!-- 12 · PRIVACY PROOF ------------------------------------------------- -->
 <section class="slide">
   <div class="eyebrow">The core guarantee</div>
   <div class="title">YOU CAN'T READ<span class="hw">my order</span></div>
@@ -482,7 +528,7 @@
   <div class="footpill">FHE + on-chain ACL · the mempool only ever saw an encrypted handle</div>
 </section>
 
-<!-- 12 · EXTENSIBILITY / SCOPE ----------------------------------------- -->
+<!-- 13 · EXTENSIBILITY / SCOPE ----------------------------------------- -->
 <section class="slide">
   <div class="eyebrow">Extensibility</div>
   <div class="title">32 TICKS NOW,<span class="hw">parameterized</span></div>
@@ -507,7 +553,7 @@ order: { batchId, trader, <span class="c-key">side</span> }</div>
   <div class="footpill">read-only indexer · chain → REST + socket · the sealed fields are never persisted off-chain</div>
 </section>
 
-<!-- 13 · JUDGED ON ----------------------------------------------------- -->
+<!-- 14 · JUDGED ON ----------------------------------------------------- -->
 <section class="slide">
   <div class="title">JUDGED<span class="hw">on</span></div>
   <div class="rows two" style="margin-top:44px;">
@@ -520,14 +566,14 @@ order: { batchId, trader, <span class="c-key">side</span> }</div>
   </div>
 </section>
 
-<!-- 14 · THANK YOU ----------------------------------------------------- -->
+<!-- 15 · THANK YOU ----------------------------------------------------- -->
 <section class="slide">
   <div class="brand">
     <svg class="tile" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="1" width="30" height="30" rx="7" fill="#FDF8EE" stroke="rgba(62,44,30,0.22)"/>
-      <path d="M11 15v-3a5 5 0 0 1 10 0v3" fill="none" stroke="#C8102E" stroke-width="2.4" stroke-linecap="round"/>
-      <rect x="9" y="15" width="14" height="11" rx="2.5" fill="none" stroke="#C8102E" stroke-width="2.4"/>
-      <circle cx="16" cy="20" r="1.7" fill="#C8102E"/>
+      <rect x="1" y="1" width="30" height="30" rx="7" fill="rgba(200,16,46,0.08)" stroke="rgba(62,44,30,0.22)"/>
+      <path d="M7 9 Q10 22 16 23" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M25 9 Q22 22 16 23" fill="none" stroke="#C8102E" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="16" cy="23" r="1.9" fill="#C8102E"/>
     </svg>
     <span class="name">CON<span class="dot">CORD</span></span>
   </div>

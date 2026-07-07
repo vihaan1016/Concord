@@ -54,9 +54,17 @@ export default function Landing() {
         className="fixed top-0 left-0 right-0 z-40 px-6 h-14 flex items-center justify-between border-b backdrop-blur-md bg-[rgba(250,244,232,0.85)] border-[rgba(62,44,30,0.16)]"
         {...fadeUp(showIntro ? 0 : 3.2, 1)}
       >
-        <span className="font-display font-800 text-sm tracking-wider text-[#231812]">
-          CON<span className="text-[#C8102E]">CORD</span>
-        </span>
+        <div className="flex items-center gap-2.5">
+          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="7" fill="rgba(200,16,46,0.08)" />
+            <path d="M7 9 Q10 22 16 23" stroke="#C8102E" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+            <path d="M25 9 Q22 22 16 23" stroke="#C8102E" strokeWidth="2.6" fill="none" strokeLinecap="round" />
+            <circle cx="16" cy="23" r="1.9" fill="#C8102E" />
+          </svg>
+          <span className="font-display font-800 text-sm tracking-wider text-[#231812]">
+            CON<span className="text-[#C8102E]">CORD</span>
+          </span>
+        </div>
         <div className="flex items-center gap-3">
           <Link
             to="/docs"
