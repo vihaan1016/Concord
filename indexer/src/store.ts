@@ -32,7 +32,7 @@ export class Store {
   private orders = new Map<string, OrderRow>();
 
   constructor() {
-    this.pool = config.DATABASE_URL ? new pg.Pool({ connectionString: config.DATABASE_URL }) : null;
+    this.pool = config.DATABASE_URL ? new pg.Pool({ connectionString: config.DATABASE_URL, ssl: { rejectUnauthorized: false } }) : null;
   }
 
   async init(): Promise<void> {
