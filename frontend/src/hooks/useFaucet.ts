@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react'
-import { usePublicClient, useWriteContract } from 'wagmi'
+import { useWriteContract, useConfig } from 'wagmi'
+import { waitForTransactionReceipt } from '@wagmi/core'
 import { BASE_TOKEN_ADDRESS, QUOTE_TOKEN_ADDRESS, CONFIDENTIAL_TOKEN_ABI } from '@/config/contracts'
 
 /** Mint test base + quote tokens to the connected trader (testnet faucet). */
 export function useFaucet() {
   const { writeContractAsync } = useWriteContract()
-  const publicClient = usePublicClient()
+  const config = useConfig()
   const [minting, setMinting] = useState(false)
 
   const mint = useCallback(
@@ -19,13 +20,13 @@ export function useFaucet() {
             functionName: 'mint',
             args: [to, amount],
           })
-          await publicClient?.waitForTransactionReceipt({ hash })
+          await waitForTransactionReceipt(config, { hash })
         }
       } finally {
         setMinting(false)
       }
     },
-    [writeContractAsync, publicClient],
+    [writeContractAsync, config],
   )
 
   return { mint, minting }
