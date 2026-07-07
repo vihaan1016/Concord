@@ -1,5 +1,13 @@
 const BASE = import.meta.env.VITE_API_BASE_URL ?? ''
 
+// In a production build there is no dev proxy: without VITE_API_BASE_URL, /api/* hits the
+// static frontend origin and 404s, so the batches pipeline is silently empty. Fail loudly.
+if (import.meta.env.PROD && !BASE) {
+  console.error(
+    '[Concord] VITE_API_BASE_URL is not set — the /batches pipeline and live socket cannot reach the indexer and will stay empty.',
+  )
+}
+
 export class ApiError extends Error {
   constructor(
     public status: number,
